@@ -1,0 +1,28 @@
+# Ambiente virtual
+.venv/
+venv/
+
+# Arquivos de ambiente
+.env
+*.env
+
+# Cache do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Configs do editor
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Docker
+*.pid
+*.seed
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
