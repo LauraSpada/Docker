@@ -7,8 +7,11 @@ services:
     env_file: .env
     depends_on:
       - mongodb
+      - rabbitmq
     volumes:
-      - ./app:/app/app   # opcional: hot reload do código
+      - ./app:/app/app   
+    stdin_open: true
+    tty: true
     command: python app/main.py
 
   mongodb:
@@ -22,6 +25,16 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"   # Porta para apps Python se conectarem
+      - "15672:15672" # Painel de administração
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
 
 volumes:
   mongo_data:

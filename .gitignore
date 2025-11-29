@@ -5,6 +5,8 @@ venv/
 # Arquivos de ambiente
 .env
 *.env
+node_modules
+__pycache__
 
 # Cache do Python
 __pycache__/
