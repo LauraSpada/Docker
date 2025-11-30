@@ -1,12 +1,11 @@
 import os
 from dotenv import load_dotenv
-from messaging import publish_message
+from messaging import publish_event  
 from mongoengine import (
     Document, EmbeddedDocument,
     StringField, DateTimeField, IntField, FloatField,
     ListField, EmbeddedDocumentField, ReferenceField, connect
 )
-
 from datetime import datetime
 
 load_dotenv()
@@ -51,7 +50,14 @@ def criar_Restaurante():
     restaurante = Restaurante(nome=nome, descricao=descricao, telefone=telefone, localizacao=localizacao)
     restaurante.save()
 
-    publish_message("log_acoes", f"Restaurante criado: {nome}")
+    publish_event(
+        event_type="restaurante.criado",
+        payload={
+            "id": str(restaurante.id),
+            "nome": restaurante.nome,
+            "endereco": restaurante.localizacao
+        }
+    )
 
     print(f"Restaurante '{nome}' cadastrado com sucesso!")
 
@@ -70,7 +76,13 @@ def adicionar_Opcao():
     restaurante.opcoes.append(nova_opcao)
     restaurante.save()
 
-    publish_message("log_acoes", f"Opção adicionada: {nome}")
+    publish_event(
+        event_type="opcao.criado",
+        payload={
+            "nome": nova_opcao.nome,
+            "preço": nova_opcao.preco
+        }
+    )
 
     print(f"Opção '{nome}'adicionada ao restaurante {restaurante.nome}!")
 
@@ -169,7 +181,14 @@ def atualizar_Restaurante():
     restaurante.telefone = novo_telefone
     restaurante.save()
 
-    publish_message("log_acoes", f"Restaurante atualizado: {restaurante.nome}")
+    publish_event(
+        event_type="restaurante.atualizado",
+        payload={
+            "id": str(restaurante.id),
+            "nome": restaurante.nome,
+            "telefone": restaurante.telefone
+        }
+    )
 
     print(f"Telefone atualizado para {novo_telefone}!")
 
@@ -198,8 +217,14 @@ def atualizar_Opcao():
     opcao.preco = novo_preco
     restaurante.save()
 
-    publish_message("log_acoes", f"Restaurante atualizado: {opcao.nome}")
-
+    publish_event(
+        event_type="opcao.atualizado",
+        payload={
+            "id": str(opcao.id),
+            "nome": opcao.nome,
+            "preco": opcao.preco
+        }
+    )
     print(f"Preço atualizado para {novo_preco}!")
 
 #-------------------
@@ -213,7 +238,12 @@ def deletar_Restaurante():
         return
     restaurante.delete()
 
-    publish_message("log_acoes", f"Restaurante deletado: {nome_res}")
+    publish_event(
+        event_type="restaurante.deletado",
+        payload={
+            "id": restaurante.id
+        }
+    )
 
     print(f"O Restaurante '{nome_res}' e todas as suas opções foram removidas!")
 
@@ -239,7 +269,12 @@ def deletar_Opcao():
     restaurante.opcoes = [o for o in restaurante.opcoes if o.nome != nome_opcao]
     restaurante.save()
 
-    publish_message("log_acoes", f"Restaurante deletado: {nome_opcao}")
+    publish_event(
+        event_type="opcao.deletado",
+        payload={
+            "id": opcao.id
+        }
+    )
 
     print(f"A opção '{nome_opcao}' foi removida do Restaurante '{nome_res}'!")
 
