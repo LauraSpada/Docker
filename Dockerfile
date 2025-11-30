@@ -1,16 +1,18 @@
+# Use imagem oficial do Python
 FROM python:3.11-slim
 
-# Diretório da aplicação
+# Diretório de trabalho
 WORKDIR /app
 
-# Copia apenas requirements primeiro (melhor cache)
+# Copiar dependências
 COPY requirements.txt .
 
-# Instala dependências
+# Instalar dependências
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia o código da aplicação
+# Copiar o código da aplicação
 COPY app/ ./app
 
-# Comando padrão ao iniciar o container
-CMD ["python", "app/main.py"]
+# Variável de ambiente para não precisar passar FLASK_APP manualmente
+ENV FLASK_APP=app/api.py
+ENV FLASK_RUN_HOST=0.0.0.0
