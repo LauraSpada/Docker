@@ -15,14 +15,14 @@ services:
 
   consumer:
     build: .
-    container_name: consumer #event-consumer
+    container_name: consumer 
     env_file:
       - .env
     depends_on:
       - mongodb
       - rabbitmq
-    restart: always  # garante que ele volte caso RabbitMQ demore para subir
-    command: python -u app/consumer.py   # reforço para logs em stdout
+    restart: always  
+    command: python -u app/consumer.py   
 
   mongodb:
     image: mongo:6.0
@@ -44,7 +44,7 @@ services:
       RABBITMQ_DEFAULT_PASS: ${RABBIT_PASS}
     ports:
       - "5672:5672"
-      - "15672:15672"  # painel web
+      - "15672:15672"  
 
 volumes:
   mongo_data:

@@ -157,7 +157,7 @@ def adicionar_opcao(id):
 
 @app.get("/restaurantes/<id>/opcoes")
 def listar_opcoes_restaurante(id):
-    # valida id
+
     try:
         restaurante = Restaurante.objects(id=id).first()
     except Exception:
