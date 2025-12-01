@@ -15,13 +15,14 @@ services:
 
   consumer:
     build: .
-    container_name: consumer
+    container_name: consumer #event-consumer
     env_file:
       - .env
     depends_on:
       - mongodb
       - rabbitmq
-    command: python app/consumer.py
+    restart: always  # garante que ele volte caso RabbitMQ demore para subir
+    command: python -u app/consumer.py   # reforço para logs em stdout
 
   mongodb:
     image: mongo:6.0

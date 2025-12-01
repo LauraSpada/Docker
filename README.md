@@ -4,15 +4,10 @@
 # rodar toda a aplicação
     docker-compose up
 
-# menu interativo (app/main.py)
-    docker-compose run --build app
-    ou
-    docker-compose run app
-        
 # RabbitMQ
     docker-compose up -d rabbitmq
 
-# acessar o painel do RabbitMQ para ver os logs da fila 'event'
+# acessar o painel do RabbitMQ para ver os logs da fila 'eventos'
     http://localhost:15672
         user: guest
         password: guest
@@ -30,8 +25,7 @@
         curl -X GET http://localhost:5000/restaurantes/<id>
 
         adicionar um restaurante
-        curl -X POST http://localhost:5000/restaurantes -H "Content-Type: application/json" -d '{"nome":"Restaurante Teste","descricao":"Comida deliciosa",
-        "telefone":"123456789","localizacao":"Rua Teste, 123","opcoes":[{"nome":"Prato A","ingredientes":"Ingrediente 1, Ingrediente 2","preco":25.5}]}'
+        curl -X POST http://localhost:5000/restaurantes -H "Content-Type: application/json" -d '{"nome":"Restaurante Teste","descricao":"Comida deliciosa","telefone":"123456789","localizacao":"Rua Teste, 123","opcoes":[{"nome":"Prato A","ingredientes":"Ingrediente 1, Ingrediente 2","preco":25.5}]}'
 
         atualizar o campo de um restaurante
         curl -X PUT http://localhost:5000/restaurantes/<id> -H "Content-Type: application/json" -d '{"telefone":"987654321"}' 
@@ -51,8 +45,12 @@
         deletar opção
         curl -X DELETE http://localhost:5000/restaurantes/<id>/opcoes/<nome_opcao>
 
-# ver os logs do consumer
-    docker logs -f event_consumer
+
+# ver os códigos http que a api envia
+    docker logs -f flask_api
+
+# ver os logs que o consumer recebe
+    docker logs -f consumer
 
 # derrubar os conteiners 
     docker compose down

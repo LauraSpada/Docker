@@ -16,3 +16,4 @@ COPY app/ ./app
 # Variável de ambiente para não precisar passar FLASK_APP manualmente
 ENV FLASK_APP=app/api.py
 ENV FLASK_RUN_HOST=0.0.0.0
+CMD ["python", "-u", "app/consumer.py"]
